@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+        <head>
+                <script src="libs/three.min.js"></script>
+                <script src="js/objects.js"></script>
+                <script src="js/drawing.js"></script>
+                <script src="js/ai.js"></script>
+                <script src="js/inputs.js"></script>
+                <script src="js/game.js"></script>
+                <meta name='viewport' content='width=device-width' />
+                <meta name='viewport' content='width=device-width' />
+        </head>
+
+        <body>
+                <div id="menu">
+                        <h1>Light Cycles</h1>
+                        <p>A fun little game</p>
+
+                        <button onclick="twoPlayer()">Start 2 Player</button>
+                        <button onclick="onePlayer()">Start 1 Player</button>
+                </div>
+
+
+        </body>
+        <script>
+                var world;
+                var options = {};
+                var gameIsRunning = false;
+
+                function goToMenu() {
+                        gameIsRunning = false;
+                        document.querySelector("canvas").parentNode.removeChild(document.querySelector("canvas"));
+                        document.getElementById('menu').style.display = "block";
+                }
+
+                function goToGame() {
+                        world = initWorld(80);
+                        initRenderer(world);
+                        initInput(world);
+                        requestAnimationFrame(loop);
+                        gameIsRunning = true;
+                        document.getElementById('menu').style.display = "none";
+
+                }
+
+                function twoPlayer() {
+                        options.bikeOneController = "WASD";
+                        options.bikeTwoController = "ARROW";
+                        goToGame();
+                }
+
+                function onePlayer() {
+                        options.bikeOneController = "WASD";
+                        options.bikeTwoController = "RANDOM";
+                        goToGame();
+                }
+
+                var frame = 0;
+
+                function loop() {
+                        frame++;
+                        if (gameIsRunning) {
+                                if (frame % 5 == 0) {
+                                        getInput(world);
+                                        update(world);
+                                        draw(world);
+                                }
+                                requestAnimationFrame(loop);
+                        }
+                }
+        </script>
+
+</html>
